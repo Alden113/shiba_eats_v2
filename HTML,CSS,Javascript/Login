@@ -22,6 +22,8 @@
             padding: 40px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
+            max-width: 300px;
+            width: 100%;
         }
         .container h2 {
             margin-bottom: 40px;
@@ -30,7 +32,8 @@
             display: flex;
             flex-direction: column;
         }
-        .container form input {
+        .container form input,
+        .container form select {
             margin-bottom: 20px;
             padding: 10px;
             border: 1px solid #ccc;
@@ -51,64 +54,141 @@
             margin-top: 10px;
             color: #007bff;
             cursor: pointer;
+            text-align: center;
         }
     </style>
 </head>
 <body>
     <div class="container" id="login-container">
-        <h2>會員登入</h2>
+        <h2>會員登入/餐廳端登入</h2>
         <form id="login-form">
-            <input type="text" id="login-username" placeholder="會員名稱" required>
+            <select id="login-type">
+                <option value="user">會員帳號</option>
+                <option value="restaurant">餐廳端帳號</option>
+            </select>
+            <input type="text" id="login-username" placeholder="會員或餐廳名稱" required>
             <input type="password" id="login-password" placeholder="密碼" required>
             <button type="button" onclick="login()">登入</button>
             <p class="toggle-link" onclick="toggleForm()">還沒註冊? 點此註冊</p>
+            <p class="toggle-link" onclick="toggleForgotPasswordForm()">忘記密碼?請點此</p>
         </form>
     </div>
 
     <div class="container" id="register-container" style="display: none;">
-        <h2>註冊</h2>
+        <h2>註冊會員/註冊餐廳端</h2>
         <form id="register-form">
-            <input type="text" id="register-username" placeholder="會員名稱" required>
+            <select id="register-type">
+                <option value="user">會員帳號</option>
+                <option value="restaurant">餐廳端帳號</option>
+            </select>
+            <input type="text" id="register-username" placeholder="會員或餐廳名稱" required>
             <input type="password" id="register-password" placeholder="密碼" required>
+            <input type="email" id="register-email" placeholder="Email" required>
             <button type="button" onclick="register()">註冊</button>
             <p class="toggle-link" onclick="toggleForm()">已經有會員了嗎? 點此登入</p>
         </form>
     </div>
 
+    <div class="container" id="forgot-password-container" style="display: none;">
+        <h2>忘記密碼</h2>
+        <form id="forgot-password-form">
+            <select id="forgot-password-type">
+                <option value="user">會員帳號</option>
+                <option value="restaurant">餐廳端帳號</option>
+            </select>
+            <input type="email" id="forgot-password-email" placeholder="Email" required>
+            <button type="button" onclick="forgotPassword()">找回密碼</button>
+            <p class="toggle-link" onclick="toggleLoginForm()">返回登入</p>
+        </form>
+    </div>
+
     <script>
-        const database = {};
+        const userDatabase = {};
+        const restaurantDatabase = {};
 
         function toggleForm() {
             const loginContainer = document.getElementById('login-container');
             const registerContainer = document.getElementById('register-container');
+            const forgotPasswordContainer = document.getElementById('forgot-password-container');
             if (loginContainer.style.display === 'none') {
                 loginContainer.style.display = 'block';
                 registerContainer.style.display = 'none';
+                forgotPasswordContainer.style.display = 'none';
             } else {
                 loginContainer.style.display = 'none';
                 registerContainer.style.display = 'block';
+                forgotPasswordContainer.style.display = 'none';
             }
+            clearFormFields();
+        }
+
+        function toggleForgotPasswordForm() {
+            const loginContainer = document.getElementById('login-container');
+            const registerContainer = document.getElementById('register-container');
+            const forgotPasswordContainer = document.getElementById('forgot-password-container');
+            loginContainer.style.display = 'none';
+            registerContainer.style.display = 'none';
+            forgotPasswordContainer.style.display = 'block';
+            clearFormFields();
+        }
+
+        function toggleLoginForm() {
+            const loginContainer = document.getElementById('login-container');
+            const registerContainer = document.getElementById('register-container');
+            const forgotPasswordContainer = document.getElementById('forgot-password-container');
+            loginContainer.style.display = 'block';
+            registerContainer.style.display = 'none';
+            forgotPasswordContainer.style.display = 'none';
+            clearFormFields();
+        }
+
+        function clearFormFields() {
+            document.getElementById('login-username').value = '';
+            document.getElementById('login-password').value = '';
+            document.getElementById('register-username').value = '';
+            document.getElementById('register-password').value = '';
+            document.getElementById('register-email').value = '';
+            document.getElementById('forgot-password-email').value = '';
         }
 
         function login() {
+            const type = document.getElementById('login-type').value;
             const username = document.getElementById('login-username').value;
             const password = document.getElementById('login-password').value;
-            if (database[username] && database[username] === password) {
+            const database = (type === 'user') ? userDatabase : restaurantDatabase;
+            if (database[username] && database[username].password === password) {
                 alert('登入成功!');
             } else {
-                alert('錯誤的會員名稱或密碼');
+                alert('錯誤的帳號或密碼!');
             }
         }
 
         function register() {
+            const type = document.getElementById('register-type').value;
             const username = document.getElementById('register-username').value;
             const password = document.getElementById('register-password').value;
+            const email = document.getElementById('register-email').value;
+            const database = (type === 'user') ? userDatabase : restaurantDatabase;
             if (database[username]) {
-                alert('此會員名稱已被使用!');
+                alert('此帳號名已被註冊');
             } else {
-                database[username] = password;
-                alert('註冊成功! 您現在可以登入了');
+                database[username] = { password, email };
+                alert('註冊成功!您現在可以登入了!');
                 toggleForm();
+            }
+        }
+
+        function forgotPassword() {
+            const type = document.getElementById('forgot-password-type').value;
+            const email = document.getElementById('forgot-password-email').value;
+            const database = (type === 'user') ? userDatabase : restaurantDatabase;
+            const user = Object.values(database).find(user => user.email === email);
+            if (user) {
+                alert(`您的密碼是: ${user.password}`);
+                clearFormFields();
+                toggleLoginForm();
+            } else {
+                alert('找不到您的Email');
             }
         }
     </script>
