@@ -1,0 +1,89 @@
+const userDatabase = {};
+        const restaurantDatabase = {};
+
+        function toggleForm() {
+            const loginContainer = document.getElementById('login-container');
+            const registerContainer = document.getElementById('register-container');
+            const forgotPasswordContainer = document.getElementById('forgot-password-container');
+            if (loginContainer.style.display === 'none') {
+                loginContainer.style.display = 'block';
+                registerContainer.style.display = 'none';
+                forgotPasswordContainer.style.display = 'none';
+            } else {
+                loginContainer.style.display = 'none';
+                registerContainer.style.display = 'block';
+                forgotPasswordContainer.style.display = 'none';
+            }
+            clearFormFields();
+        }
+
+        function toggleForgotPasswordForm() {
+            const loginContainer = document.getElementById('login-container');
+            const registerContainer = document.getElementById('register-container');
+            const forgotPasswordContainer = document.getElementById('forgot-password-container');
+            loginContainer.style.display = 'none';
+            registerContainer.style.display = 'none';
+            forgotPasswordContainer.style.display = 'block';
+            clearFormFields();
+        }
+
+        function toggleLoginForm() {
+            const loginContainer = document.getElementById('login-container');
+            const registerContainer = document.getElementById('register-container');
+            const forgotPasswordContainer = document.getElementById('forgot-password-container');
+            loginContainer.style.display = 'block';
+            registerContainer.style.display = 'none';
+            forgotPasswordContainer.style.display = 'none';
+            clearFormFields();
+        }
+
+        function clearFormFields() {
+            document.getElementById('login-username').value = '';
+            document.getElementById('login-password').value = '';
+            document.getElementById('register-username').value = '';
+            document.getElementById('register-password').value = '';
+            document.getElementById('register-email').value = '';
+            document.getElementById('forgot-password-email').value = '';
+        }
+
+        function login() {
+            const type = document.getElementById('login-type').value;
+            const username = document.getElementById('login-username').value;
+            const password = document.getElementById('login-password').value;
+            const database = (type === 'user') ? userDatabase : restaurantDatabase;
+            if (database[username] && database[username].password === password) {
+                alert('登入成功!');
+            } else {
+                alert('錯誤的帳號或密碼!');
+            }
+        }
+
+        function register() {
+            const type = document.getElementById('register-type').value;
+            const username = document.getElementById('register-username').value;
+            const password = document.getElementById('register-password').value;
+            const email = document.getElementById('register-email').value;
+            const database = (type === 'user') ? userDatabase : restaurantDatabase;
+            if (database[username]) {
+                alert('此帳號名已被註冊');
+            } else {
+                database[username] = { password, email };
+                alert('註冊成功!您現在可以登入了!');
+                toggleForm();
+            }
+        }
+
+        function forgotPassword() {
+            const type = document.getElementById('forgot-password-type').value;
+            const email = document.getElementById('forgot-password-email').value;
+            const database = (type === 'user') ? userDatabase : restaurantDatabase;
+            const user = Object.values(database).find(user => user.email === email);
+            if (user) {
+                alert(`您的密碼是: ${user.password}`);
+                clearFormFields();
+                toggleLoginForm();
+            } else {
+                alert('找不到您的Email');
+            }
+        }
+        
