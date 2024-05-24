@@ -1,0 +1,49 @@
+body {
+    font-family: Arial, sans-serif;
+    background: url('https://khh.travel/content/images/static/4-1-food-11.jpg') no-repeat center center fixed;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+.container {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 40px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    max-width: 300px;
+    width: 100%;
+}
+.container h2 {
+    margin-bottom: 40px;
+}
+.container form {
+    display: flex;
+    flex-direction: column;
+}
+.container form input,
+.container form select {
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+.container form button {
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    background-color: #28a745;
+    color: white;
+    cursor: pointer;
+}
+.container form button:hover {
+    background-color: #218838;
+}
+.container .toggle-link {
+    margin-top: 10px;
+    color: #007bff;
+    cursor: pointer;
+    text-align: center;
+}
