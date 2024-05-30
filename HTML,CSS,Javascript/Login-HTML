@@ -6,52 +6,20 @@
     <link rel="icon" href="https://cdn-icons-png.flaticon.com/128/8708/8708467.png" type="image/x-icon"> 
     <!--// icon來源:https://www.flaticon.com/search?word=shiba by Paul J.-->
     <title>歡迎來到Shiba Eats!</title>
-    <link rel="stylesheet" href="login.css">
+    <link rel="stylesheet" href="style.css">
+    <script type="module" src="login.js" defer></script>
 </head>
 <body>
     <div class="container" id="login-container">
-        <h2>會員登入/餐廳端登入</h2>
+        <h2>登入</h2>
         <form id="login-form">
-            <select id="login-type">
-                <option value="user">會員帳號</option>
-                <option value="restaurant">餐廳端帳號</option>
-            </select>
-            <input type="text" id="login-username" placeholder="會員或餐廳名稱" required>
-            <input type="password" id="login-password" placeholder="密碼" required>
-            <button type="button" onclick="login()">登入</button>
-            <p class="toggle-link" onclick="toggleForm()">還沒註冊? 點此註冊</p>
-            <p class="toggle-link" onclick="toggleForgotPasswordForm()">忘記密碼?請點此</p>
+            <input type="email" id="email" placeholder="Email" required>
+            <input type="password" id="password" placeholder="密碼" required>
+            <button type="submit" id="submit">登入</button>
+            <p> 
+                <span> <a href = "register.html">新用戶嗎? 點此註冊</a></span>
+            </p>
         </form>
     </div>
-
-    <div class="container" id="register-container" style="display: none;">
-        <h2>註冊會員/註冊餐廳端</h2>
-        <form id="register-form">
-            <select id="register-type">
-                <option value="user">會員帳號</option>
-                <option value="restaurant">餐廳端帳號</option>
-            </select>
-            <input type="text" id="register-username" placeholder="會員或餐廳名稱" required>
-            <input type="password" id="register-password" placeholder="密碼" required>
-            <input type="email" id="register-email" placeholder="Email" required>
-            <button type="button" onclick="register()">註冊</button>
-            <p class="toggle-link" onclick="toggleForm()">已經有會員了嗎? 點此登入</p>
-        </form>
-    </div>
-
-    <div class="container" id="forgot-password-container" style="display: none;">
-        <h2>忘記密碼</h2>
-        <form id="forgot-password-form">
-            <select id="forgot-password-type">
-                <option value="user">會員帳號</option>
-                <option value="restaurant">餐廳端帳號</option>
-            </select>
-            <input type="email" id="forgot-password-email" placeholder="Email" required>
-            <button type="button" onclick="forgotPassword()">找回密碼</button>
-            <p class="toggle-link" onclick="toggleLoginForm()">返回登入</p>
-        </form>
-    </div>
-
-    <script src="login.js"></script>
 </body>
 </html>
