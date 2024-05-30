@@ -26,7 +26,7 @@ submit.addEventListener("click", function (event){
             // Signed up 
             const user = userCredential.user;
             alert("登入成功!");
-            window.location.href = "grand.html";
+            window.location.href = "type.html";
         })
         .catch((error) => {
             const errorCode = error.code
